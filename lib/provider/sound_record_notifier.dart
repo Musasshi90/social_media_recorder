@@ -116,14 +116,14 @@ class SoundRecordNotifier extends ChangeNotifier {
   /// used to get the current store path
   Future<String> getFilePath() async {
     String _sdPath = "";
+    Directory tempDir = await getTemporaryDirectory();
     if (Platform.isIOS) {
-      Directory tempDir = await getTemporaryDirectory();
       _sdPath = initialStorePathRecord.isEmpty
           ? tempDir.path
           : initialStorePathRecord;
     } else {
       _sdPath = initialStorePathRecord.isEmpty
-          ? "/storage/emulated/0/new_record_sound"
+          ? tempDir.path
           : initialStorePathRecord;
     }
     var d = Directory(_sdPath);
@@ -178,12 +178,12 @@ class SoundRecordNotifier extends ChangeNotifier {
         } else {
           if (x.dx <= MediaQuery.of(context).size.width * 0.5) {}
           if (last < x.dx) {
-            edge = edge -= x.dx / 200;
+            edge = edge -= x.dx / 50;
             if (edge < 0) {
               edge = 0;
             }
           } else if (last > x.dx) {
-            edge = edge += x.dx / 200;
+            edge = edge += x.dx / 50;
           }
           last = x.dx;
         }
